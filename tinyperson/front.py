@@ -24,6 +24,3 @@ class GameLoop(object):
             print type, value, traceback
 
         self.goodbye()
-
-
-GameLoop()
