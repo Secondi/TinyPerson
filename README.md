@@ -1,9 +1,12 @@
-Green Claw
+# Tiny Person
 
 Made by Secondi, the band.
 
-This is a prototype for our game. Want to support it? vote for us on steam green light :-)
+This is a prototype for our game.
 
+## Want to support us?
+- Buy our music http://secondi.bandcamp.com
+- Follow on facebook http://facebook.com/secondination
 
 
 ## LICENSE

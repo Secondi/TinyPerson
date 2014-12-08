@@ -30,19 +30,19 @@ class GameController(BaseComponent):
         SPACE: False
     }
 
-    def __init__(self, initial_state, test=False):
-        super(GameController, self).__init__(initial_state, test)
+    def __init__(self, initial_state, is_test=False):
+        super(GameController, self).__init__(initial_state, is_test)
         controller_thread = Thread(
             group=None,
             target=self._controller_loop,
             name="Controller Thread",
-            args=(test,),
+            args=(),
             kwargs={}
         )
 
         controller_thread.start()
 
-    def _controller_loop(self, test):
+    def _controller_loop(self):
         key_press = None
 
         # Check if Controller component is active
@@ -50,7 +50,7 @@ class GameController(BaseComponent):
             try:
                 key_press = self.queue_in.get(timeout=2)
             except Empty:
-                if test:
+                if self.is_test:
                     print "key didn't come, lets cycle through for kicks"
 
             if key_press in self.CONTROLS:
