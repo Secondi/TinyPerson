@@ -1,10 +1,12 @@
 __author__ = 'SecondiNation'
 
-from .base import ScreenComponent
 from drawille import line
 
+from .base import ScreenComponent
+
+
 class Line(ScreenComponent):
-    def __init__(self, x1, y1, x2, y2, screen_x, screen_y, is_test=False):
+    def __init__(self, x1, y1, x2, y2, world_width, world_height, is_test=False):
         state = {
             'x1': x1,
             'y1': y1,
@@ -12,7 +14,7 @@ class Line(ScreenComponent):
             'y2': y2
         }
 
-        super(Line, self).__init__(state, screen_x, screen_y, is_test)
+        super(Line, self).__init__(state, world_width, world_height, is_test)
 
     def draw(self, terminal_x, terminal_y):
         """

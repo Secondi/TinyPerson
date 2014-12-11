@@ -38,4 +38,14 @@ class BaseComponent(object):
         :return: The component state
         """
 
-        return self.state
+        return self.state.copy()
+
+    def set_state(self, new_state):
+        """
+
+        :param new_state: State that is to be set on the component
+        :return: instance of self, so that he have the option to chain commands
+        """
+        self.state = new_state.copy()
+
+        return self

@@ -30,8 +30,11 @@ class GameController(BaseComponent):
         SPACE: False
     }
 
-    def __init__(self, initial_state, is_test=False):
+    def __init__(self, terminal_window, initial_state, is_test=False):
         super(GameController, self).__init__(initial_state, is_test)
+
+        self.terminal_window = terminal_window
+
         controller_thread = Thread(
             group=None,
             target=self._controller_loop,

@@ -6,7 +6,7 @@ from threading import Thread
 
 from drawille import Canvas
 
-from .base import BaseComponent
+from ..base import BaseComponent
 
 
 class TerminalScreen(BaseComponent):
@@ -15,7 +15,9 @@ class TerminalScreen(BaseComponent):
 
     This is a handler for getting drawille onto the curses interface.
 
-    On each draw attempt, this will take the assets from the game world and attempt to draw them on screen
+    On each draw attempt, this will take the assets from the game world and attempt to draw them on screen.
+
+    terminal_window provides units in y,x format. This game provides units in x,y
     """
 
     BLANK_TERMINAL = {
@@ -23,7 +25,7 @@ class TerminalScreen(BaseComponent):
         'elapsed_time': 0
     }
 
-    def __init__(self, initial_state, is_test):
+    def __init__(self, terminal_window, initial_state, is_test):
         """
         Assume that curses has already been initialize
         :param initial_state: first state of the terminal
@@ -32,9 +34,9 @@ class TerminalScreen(BaseComponent):
         """
         super(TerminalScreen, self).__init__(initial_state, is_test)
 
+        self.terminal_window = terminal_window
         self.canvas = Canvas()
-        self.width = 100
-        self.height = 100
+        self.width, self.height = self._terminal_size()
         terminal_thread = Thread(
             group=None,
             target=curses.wrapper,
@@ -43,14 +45,22 @@ class TerminalScreen(BaseComponent):
             kwargs={}
         )
 
+
         terminal_thread.start()
 
 
-    def is_frame_valid(self, frame):
+    def _is_frame_valid(self, frame):
         if self.is_test:
             print "check if frame is valid"
 
-        return len(frame) > 0
+        return frame is not None and len(frame) > 0
+
+    def _terminal_size(self):
+        """
+        :return: (width, height) of the terminal window
+        """
+        height, width = self.terminal_window.getmaxyx()
+        return width, height
 
     def draw(self, terminal_screen):
         """
@@ -71,7 +81,7 @@ class TerminalScreen(BaseComponent):
                 if self.is_test:
                     print "there aren't any frames to render, lets cycle through for kicks"
 
-            if self.is_frame_valid(frame):
+            if self._is_frame_valid(frame):
                 if self.is_test:
                     print "frame is valid"
                     print "lets print the frame"
