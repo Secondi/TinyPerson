@@ -12,6 +12,8 @@ This is a prototype for our game.
 
 ## TODO
 
+- terminal wrapper
+- make the controller useful
 - Simple version of game
 - Brand with Secondi
 - Landing screen for starting game
