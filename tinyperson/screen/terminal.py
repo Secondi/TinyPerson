@@ -33,10 +33,13 @@ class TerminalScreen(BaseComponent):
         :return: n/a
         """
         super(TerminalScreen, self).__init__(initial_state, is_test)
-
         self.terminal_window = terminal_window
         self.canvas = Canvas()
         self.width, self.height = self._terminal_size()
+
+        if is_test:
+            print "terminal is %s wide, %s high" % (self.width, self.height)
+
         terminal_thread = Thread(
             group=None,
             target=curses.wrapper,
@@ -44,7 +47,6 @@ class TerminalScreen(BaseComponent):
             args=(self.draw,),
             kwargs={}
         )
-
 
         terminal_thread.start()
 
@@ -75,6 +77,8 @@ class TerminalScreen(BaseComponent):
         terminal_screen.refresh()
 
         while self.active:
+            self.height, self.width = self.terminal_window.getmaxyx()
+
             try:
                 frame = self.queue_in.get(timeout=2)
             except Empty:
@@ -86,12 +90,16 @@ class TerminalScreen(BaseComponent):
                     print "frame is valid"
                     print "lets print the frame"
 
-                self.canvas.set(0, 0)
-                self.canvas.set(self.width, self.height)
+                # self.canvas.set(0, 0)
+                # self.canvas.set(self.width, self.height)
 
                 for asset in frame:
-                    for x, y in asset.draw(self.height, self.width):
-                        self.canvas.set(x, y)
+                    for xp, yp in asset.draw(self.width, self.height):
+                        if self.is_test:
+                            self.width, self.height = self._terminal_size()
+                            print "terminal is %s wide, %s high" % (self.width, self.height)
+                            print "point x: %s, point y: %s" % (xp, yp)
+                        self.canvas.set(xp, yp)
 
                 rendered_frame = self.canvas.frame() + '\n'
                 terminal_screen.addstr(0, 0, rendered_frame)
