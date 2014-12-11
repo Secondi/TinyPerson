@@ -4,50 +4,16 @@ from Queue import Empty
 import curses
 from threading import Thread
 
-from drawille import Canvas, line
+from drawille import Canvas
 
 from .base import BaseComponent
-
-
-class ScreenComponent(BaseComponent):
-    def __init__(self, initial_state, screen_x, screen_y, is_test=False):
-        super(ScreenComponent, self).__init__(initial_state, is_test)
-        self.screen_x = screen_x
-        self.screen_y = screen_y
-
-    def translate_xy(self, x, y, terminal_x, terminal_y):
-        # print terminal_x, terminal_y
-        return x, y
-
-
-class Line(ScreenComponent):
-    def __init__(self, x1, y1, x2, y2, screen_x, screen_y, is_test=False):
-        state = {
-            'x1': x1,
-            'y1': y1,
-            'x2': x2,
-            'y2': y2
-        }
-
-        super(Line, self).__init__(state, screen_x, screen_y, is_test)
-
-    def draw(self, terminal_x, terminal_y):
-        """
-        Translate line to
-        """
-        state = self.get_state()
-
-        x, y = self.translate_xy(state['x1'], state['y1'], terminal_x, terminal_y)
-        x2, y2 = self.translate_xy(state['x2'], state['y2'], terminal_x, terminal_y)
-
-        return line(x, y, x2, y2)
 
 
 class TerminalScreen(BaseComponent):
     """
     Hello, this is the screen controller for my game.
 
-    This is a handler for using drawille on the curses interface.
+    This is a handler for getting drawille onto the curses interface.
 
     On each draw attempt, this will take the assets from the game world and attempt to draw them on screen
     """
