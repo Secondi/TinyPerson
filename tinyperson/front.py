@@ -38,13 +38,12 @@ class GameLoop(object):
             new_state['x2'] += 10
             test_line.set_state(new_state)
 
-            self.term.queue_in.put([test_line])
-
-            if new_state['x1'] > 1920:
-               self.goodbye()
+            #self.term.queue_in.put([test_line])
 
             sleep(1. / FPS)
 
+            if not self.controller.is_enabled() or new_state['x1'] > 1920:
+                self.goodbye()
 
     def goodbye(self):
         self.active = False

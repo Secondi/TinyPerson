@@ -17,6 +17,7 @@ class GameController(BaseComponent):
     LEFT = KEY_LEFT
     RIGHT = KEY_RIGHT
     SPACE = 32  # binary:010 0000, Oct:040, Dec:32, Hex:20
+    EXIT = 113
 
     CONTROLS = (
         LEFT,  # Left Arrow
@@ -43,7 +44,24 @@ class GameController(BaseComponent):
             kwargs={}
         )
 
+        capture_thread = Thread(
+            group=None,
+            target=self._capture_input,
+            name="Keyboard capture thread",
+            args=(),
+            kwargs={},
+        )
+
         controller_thread.start()
+        capture_thread.start()
+
+    def _capture_input(self):
+        while self.active:
+            c = self.terminal_window.getch()
+            self.queue_in.put(c)
+
+            if self.is_test:
+                print "captured key: ", c
 
     def _controller_loop(self):
         key_press = None
@@ -60,7 +78,12 @@ class GameController(BaseComponent):
                 # enable keypress in component state
                 self.state[key_press] = True
                 # reset key_press
-                key_press = None
+
+            if key_press is self.EXIT:
+                self.disable_component()
+
+            key_press = None
+
 
     def get_state(self):
         """

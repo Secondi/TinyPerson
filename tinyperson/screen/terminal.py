@@ -77,7 +77,7 @@ class TerminalScreen(BaseComponent):
         terminal_screen.refresh()
 
         while self.active:
-            self.height, self.width = self.terminal_window.getmaxyx()
+            self.width, self.height = self._terminal_size()
 
             try:
                 frame = self.queue_in.get(timeout=2)

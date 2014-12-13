@@ -3,12 +3,11 @@ from Queue import Queue
 
 
 class BaseComponent(object):
-    state = None
-    queue_in = Queue()
 
     def __init__(self, initial_state, is_test=False):
         self.initial_state = initial_state.copy()
         self.state = initial_state.copy()
+        self.queue_in = Queue()
         self.active = True
         self.is_test = is_test
 
@@ -32,6 +31,9 @@ class BaseComponent(object):
         self.active = True
 
         return self
+
+    def is_enabled(self):
+        return self.active
 
     def get_state(self):
         """
