@@ -52,9 +52,6 @@ class TerminalScreen(BaseComponent):
 
 
     def _is_frame_valid(self, frame):
-        if self.is_test:
-            print "check if frame is valid"
-
         return frame is not None and len(frame) > 0
 
     def _terminal_size(self):
@@ -86,12 +83,8 @@ class TerminalScreen(BaseComponent):
                     print "there aren't any frames to render, lets cycle through for kicks"
 
             if self._is_frame_valid(frame):
-                if self.is_test:
-                    print "frame is valid"
-                    print "lets print the frame"
-
-                # self.canvas.set(0, 0)
-                # self.canvas.set(self.width, self.height)
+                self.canvas.set(0, 0)
+                self.canvas.set(self.width, self.height)
 
                 for asset in frame:
                     for xp, yp in asset.draw(self.width, self.height):

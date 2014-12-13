@@ -6,8 +6,8 @@ from tinyperson import GameLoop
 
 
 # WORLD_RATIO 16:9
-WORLD_WIDTH = 1920
-WORLD_HEIGHT = 1080
+WORLD_WIDTH = 192
+WORLD_HEIGHT = 108
 
 locale.setlocale(locale.LC_ALL, "")
 
