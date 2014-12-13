@@ -4,7 +4,7 @@ from Queue import Empty
 import curses
 from threading import Thread
 
-from drawille import Canvas
+from drawille import Canvas, line
 
 from ..base import BaseComponent
 
@@ -89,10 +89,15 @@ class TerminalScreen(BaseComponent):
                 for asset in frame:
                     for xp, yp in asset.draw(self.width, self.height):
                         if self.is_test:
-                            self.width, self.height = self._terminal_size()
                             print "terminal is %s wide, %s high" % (self.width, self.height)
                             print "point x: %s, point y: %s" % (xp, yp)
-                        self.canvas.set(xp, yp)
+
+                        if xp >= 0 and xp <= self.width and yp >= 0 and yp <= self.height:
+                            print xp
+                            self.canvas.set(xp, yp)
+
+                for x,y in line(0,0,158, 45):
+                    self.canvas.set(x,y)
 
                 rendered_frame = self.canvas.frame() + '\n'
                 terminal_screen.addstr(0, 0, rendered_frame)

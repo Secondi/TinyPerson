@@ -35,7 +35,6 @@ class GameLoop(object):
         while self.active:
             new_state = test_line.get_state()
             new_state['x1'] += 10
-            new_state['x2'] += 10
             test_line.set_state(new_state)
 
             self.term.queue_in.put([test_line])

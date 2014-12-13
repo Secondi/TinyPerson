@@ -16,13 +16,13 @@ class Line(ScreenComponent):
 
         super(Line, self).__init__(state, world_width, world_height, is_test)
 
-    def draw(self, terminal_x, terminal_y):
+    def draw(self, terminal_width, terminal_height):
         """
         Translate line to
         """
         state = self.get_state()
 
-        x, y = self.translate_xy(state['x1'], state['y1'], terminal_x, terminal_y)
-        x2, y2 = self.translate_xy(state['x2'], state['y2'], terminal_x, terminal_y)
+        x, y = self.translate_xy(state['x1'], state['y1'], terminal_width, terminal_height)
+        x2, y2 = self.translate_xy(state['x2'], state['y2'], terminal_width, terminal_height)
 
         return line(x, y, x2, y2)
