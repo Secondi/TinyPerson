@@ -93,7 +93,6 @@ class TerminalScreen(BaseComponent):
                             print "point x: %s, point y: %s" % (xp, yp)
 
                         if xp >= 0 and xp <= self.width and yp >= 0 and yp <= self.height:
-                            print xp
                             self.canvas.set(xp, yp)
 
                 for x,y in line(0,0,158, 45):
