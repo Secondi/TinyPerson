@@ -31,17 +31,24 @@ class GameLoop(object):
 
     def start(self):
 
-        test_line = Line(0, 0, 50, 50, self.world_width, self.world_height)
+        test_line = Line(0, 0, 0, self.world_height, self.world_width, self.world_height)
+        test_line2 = Line(self.world_width, 0, self.world_width, self.world_height, self.world_width, self.world_height)
         while self.active:
             new_state = test_line.get_state()
-            new_state['x1'] += 10
+            new_state['x1'] += 1
+            new_state['x2'] += 1
             test_line.set_state(new_state)
 
-            self.term.queue_in.put([test_line])
+            ns = test_line2.get_state()
+            ns['x1'] -= 1
+            ns['x2'] -= 1
+            test_line2.set_state(ns)
+
+            self.term.queue_in.put([test_line, test_line2])
 
             sleep(1. / FPS)
 
-            if not self.controller.is_enabled() or new_state['x1'] > 1920:
+            if not self.controller.is_enabled() or new_state['x1'] > self.world_width:
                 self.goodbye()
 
     def goodbye(self):

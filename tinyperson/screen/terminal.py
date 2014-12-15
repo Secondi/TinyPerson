@@ -35,7 +35,7 @@ class TerminalScreen(BaseComponent):
         super(TerminalScreen, self).__init__(initial_state, is_test)
         self.terminal_window = terminal_window
         self.canvas = Canvas()
-        self.width, self.height = self._terminal_size()
+        self._refresh_size()
 
         if is_test:
             print "terminal is %s wide, %s high" % (self.width, self.height)
@@ -54,12 +54,38 @@ class TerminalScreen(BaseComponent):
     def _is_frame_valid(self, frame):
         return frame is not None and len(frame) > 0
 
-    def _terminal_size(self):
+    def _refresh_size(self):
         """
-        :return: (width, height) of the terminal window
+
+        Example terminal:
+
+        x is blank
+        H is border block
+        o is game panel
+
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        XXHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooHXX
+        XXHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHXX
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+        braile is 2 wide, 4 high.
+
+        :return: (width, height) of the terminal game panel
         """
         height, width = self.terminal_window.getmaxyx()
-        return width, height
+        self.width, self.height = (width-6) * 2, (height - 4) * 4
+
 
     def draw(self, terminal_screen):
         """
@@ -74,17 +100,16 @@ class TerminalScreen(BaseComponent):
         terminal_screen.refresh()
 
         while self.active:
-            self.width, self.height = self._terminal_size()
-
             try:
-                frame = self.queue_in.get(timeout=2)
+                frame = self.queue_in.get(timeout=0.1)
             except Empty:
                 if self.is_test:
                     print "there aren't any frames to render, lets cycle through for kicks"
 
+            self._refresh_size()
+
             if self._is_frame_valid(frame):
                 self.canvas.set(0, 0)
-                self.canvas.set(self.width, self.height)
 
                 for asset in frame:
                     for xp, yp in asset.draw(self.width, self.height):
@@ -93,10 +118,7 @@ class TerminalScreen(BaseComponent):
                             print "point x: %s, point y: %s" % (xp, yp)
 
                         if xp >= 0 and xp <= self.width and yp >= 0 and yp <= self.height:
-                            self.canvas.set(xp, yp)
-
-                for x,y in line(0,0,158, 45):
-                    self.canvas.set(x,y)
+                            self.canvas.set(6+xp, yp+8)
 
                 rendered_frame = self.canvas.frame() + '\n'
                 terminal_screen.addstr(0, 0, rendered_frame)

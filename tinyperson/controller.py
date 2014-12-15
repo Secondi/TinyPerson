@@ -69,7 +69,7 @@ class GameController(BaseComponent):
         # Check if Controller component is active
         while self.active:
             try:
-                key_press = self.queue_in.get(timeout=2)
+                key_press = self.queue_in.get(timeout=0.1)
             except Empty:
                 if self.is_test:
                     print "key didn't come, lets cycle through for kicks"
