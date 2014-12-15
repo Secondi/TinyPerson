@@ -5,8 +5,7 @@ from time import sleep
 
 from .screen import TerminalScreen
 from .controller import GameController
-from screen import Line
-
+from screen import Line, Square
 
 FPS = 25.0
 
@@ -33,6 +32,7 @@ class GameLoop(object):
 
         test_line = Line(0, 0, 0, self.world_height, self.world_width, self.world_height)
         test_line2 = Line(self.world_width, 0, self.world_width, self.world_height, self.world_width, self.world_height)
+        test_square = Square(self.world_width/2, self.world_height/2, 50, self.world_width, self.world_height)
         while self.active:
             new_state = test_line.get_state()
             new_state['x1'] += 1
@@ -44,7 +44,7 @@ class GameLoop(object):
             ns['x2'] -= 1
             test_line2.set_state(ns)
 
-            self.term.queue_in.put([test_line, test_line2])
+            self.term.queue_in.put([test_line, test_line2, test_square])
 
             sleep(1. / FPS)
 
