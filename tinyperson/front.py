@@ -45,13 +45,13 @@ class GameLoop(object):
 
         while self.active:
             new_state = test_line.get_state()
-            new_state['x1'] += 1
+            new_state['x1'] += 0.6
             new_state['x2'] += 1
             test_line.set_state(new_state)
 
             ns = test_line2.get_state()
-            ns['x1'] -= 1
-            ns['x2'] -= 1
+            ns['x1'] -= 1.2
+            ns['x2'] -= 0.5
             test_line2.set_state(ns)
 
             self.assets = [test_line, test_line2, test_square]
