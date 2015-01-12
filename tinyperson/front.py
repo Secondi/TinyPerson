@@ -6,11 +6,14 @@ from threading import Thread
 
 from .screen import TerminalScreen
 from .controller import GameController
-from screen import Line, Square
+from .screen import Line, Square
+from .physics import PhysicsWorld
 
 
 FPS = 60.0
-PHYSICS = 30.0
+RENDER_STEP = 1. / FPS
+PHYSICS_FPS = 30.0
+PHYSICS_STEP = 1. / PHYSICS_FPS
 
 
 class GameLoop(object):
@@ -32,36 +35,23 @@ class GameLoop(object):
         self.active = True
         self.assets = []
 
+        self.physics = PhysicsWorld()
+
     def draw_assets(self):
         while self.active:
             self.term.queue_in.put(self.assets)
 
-            sleep(1. / FPS)
+            sleep(RENDER_STEP)
 
     def step_physics(self):
-        test_line = Line(0, 0, 0, self.world_height, self.world_width, self.world_height)
-        test_line2 = Line(self.world_width, 0, self.world_width, self.world_height, self.world_width, self.world_height)
-        test_square = Square(self.world_width / 2, self.world_height / 2, 50, self.world_width, self.world_height)
-
         while self.active:
-            new_state = test_line.get_state()
-            new_state['x1'] += 0.6
-            new_state['x2'] += 1
-            test_line.set_state(new_state)
-
-            ns = test_line2.get_state()
-            ns['x1'] -= 1.2
-            ns['x2'] -= 0.5
-            test_line2.set_state(ns)
-
-            self.assets = [test_line, test_line2, test_square]
+            self.physics.step(PHYSICS_STEP)
 
             # should the game end?
-            if not self.controller.is_enabled() or new_state['x1'] > self.world_width:
+            if not self.controller.is_enabled():
                 self.goodbye()
 
-            # wait for next step
-            sleep(1. / PHYSICS)
+            sleep(PHYSICS_STEP)
 
     def start(self):
         render_thread = Thread(

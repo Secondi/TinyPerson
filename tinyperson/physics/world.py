@@ -4,10 +4,10 @@ import logging
 import pymunk
 
 
-logger = logging("TinyPerson.physics")
+logger = logging.getLogger("TinyPerson.physics")
 
 
-class PhysiczsWorld(object):
+class PhysicsWorld(object):
     def __init__(self, gravity=-900.0):
         self.world = pymunk.Space()
         self.world.gravity = (0.0, gravity)
