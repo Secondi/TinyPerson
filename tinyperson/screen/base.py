@@ -26,4 +26,5 @@ class ScreenComponent(BaseComponent):
         :param terminal_y: height of terminal
         :return: x,y of world translated to position on screen
         """
-        return (terminal_width * (float(x) / self.world_width)), (terminal_height * (float(y) / self.world_height))
+        return (int(terminal_width * (float(x) / self.world_width)),
+                int((terminal_height * (float(y) / self.world_height))))

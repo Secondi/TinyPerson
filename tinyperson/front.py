@@ -4,9 +4,8 @@ import curses
 from time import sleep
 from threading import Thread
 
-from .screen import TerminalScreen
+from .screen import TerminalScreen, Square
 from .controller import GameController
-from .screen import Line, Square
 from .physics import PhysicsWorld
 
 
@@ -14,6 +13,8 @@ FPS = 60.0
 RENDER_STEP = 1. / FPS
 PHYSICS_FPS = 30.0
 PHYSICS_STEP = 1. / PHYSICS_FPS
+
+PHYSICS_WIDTH = 5
 
 
 class GameLoop(object):
@@ -25,6 +26,8 @@ class GameLoop(object):
         if is_test:
             print "starting game"
 
+        self.physics = PhysicsWorld()
+
         self.stdscr = curses.initscr()
         self.stdscr.refresh()
         self.world_width = world_width
@@ -35,9 +38,20 @@ class GameLoop(object):
         self.active = True
         self.assets = []
 
-        self.physics = PhysicsWorld()
 
     def draw_assets(self):
+        # self.assets.append(Square(self.world_width/2, self.world_height/2, PHYSICS_WIDTH+3, self.world_width, self.world_height))
+        self.assets.append(
+            Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH + 3, self.world_width, self.world_height))
+        self.assets.append(
+            Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH + 2, self.world_width, self.world_height))
+        self.assets.append(
+            Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH + 1, self.world_width, self.world_height))
+        self.assets.append(
+            Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH, self.world_width, self.world_height))
+        self.assets.append(
+            Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH + 4, self.world_width, self.world_height))
+
         while self.active:
             self.term.queue_in.put(self.assets)
 
