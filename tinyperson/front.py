@@ -14,7 +14,7 @@ RENDER_STEP = 1. / FPS
 PHYSICS_FPS = 30.0
 PHYSICS_STEP = 1. / PHYSICS_FPS
 
-PHYSICS_WIDTH = 5
+PHYSICS_WIDTH = 25
 
 
 class GameLoop(object):
@@ -40,17 +40,8 @@ class GameLoop(object):
 
 
     def draw_assets(self):
-        # self.assets.append(Square(self.world_width/2, self.world_height/2, PHYSICS_WIDTH+3, self.world_width, self.world_height))
-        self.assets.append(
-            Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH + 3, self.world_width, self.world_height))
-        self.assets.append(
-            Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH + 2, self.world_width, self.world_height))
-        self.assets.append(
-            Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH + 1, self.world_width, self.world_height))
         self.assets.append(
             Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH, self.world_width, self.world_height))
-        self.assets.append(
-            Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH + 4, self.world_width, self.world_height))
 
         while self.active:
             self.term.queue_in.put(self.assets)

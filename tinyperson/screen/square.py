@@ -5,9 +5,16 @@ import itertools
 from .base import ScreenComponent
 from .line import Line
 
+import logging
+import sys
+
+
+logger = logging.getLogger("TinyPerson.screen")
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.FileHandler("debug.log"))
 
 class Square(ScreenComponent):
-    def __init__(self, x, y, width, world_width, world_height, is_test=False):
+    def __init__(self, x, y, half_width, world_width, world_height, is_test=False):
         """
         Initialize square
 
@@ -22,7 +29,7 @@ class Square(ScreenComponent):
         state = {
             'x': x,
             'y': y,
-            'width': width
+            'halfWidth': half_width
         }
 
         super(Square, self).__init__(state, world_width, world_height, is_test)
@@ -46,8 +53,8 @@ class Square(ScreenComponent):
 
     def draw(self, terminal_width, terminal_height):
         state = self.get_state()
-        width = state['width']
-        half_width = width / 2
+        half_width = state['halfWidth']
+        width = half_width * 2
         tl_x = state['x'] - half_width
         tl_y = state['y'] - half_width
 
@@ -59,6 +66,11 @@ class Square(ScreenComponent):
 
         tr_x = br_x
         tr_y = tl_y
+
+        logger.debug("top left %s, %s" % (tl_x, tl_y))
+        #logger.debug("bottom left %s, %s" % (bl_x, bl_y))
+        #logger.debug("top right %s, %s" % (tr_x, tr_y))
+        #logger.debug("bottom right %s, %s" % (br_x, br_y))
 
         return itertools.chain(
             # Top Line
