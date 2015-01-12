@@ -60,7 +60,7 @@ class GameLoop(object):
             if not self.controller.is_enabled() or new_state['x1'] > self.world_width:
                 self.goodbye()
 
-            #wait for next step
+            # wait for next step
             sleep(1. / PHYSICS)
 
     def start(self):

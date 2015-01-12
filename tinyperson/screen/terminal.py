@@ -4,7 +4,7 @@ from Queue import Empty
 import curses
 from threading import Thread
 
-from drawille import Canvas, line
+from drawille import Canvas
 
 from ..base import BaseComponent
 
@@ -84,7 +84,7 @@ class TerminalScreen(BaseComponent):
         :return: (width, height) of the terminal game panel
         """
         height, width = self.terminal_window.getmaxyx()
-        self.width, self.height = (width-6) * 2, (height - 4) * 4
+        self.width, self.height = (width - 6) * 2, (height - 4) * 4
 
 
     def draw(self, terminal_screen):
@@ -118,7 +118,7 @@ class TerminalScreen(BaseComponent):
                             print "point x: %s, point y: %s" % (xp, yp)
 
                         if xp >= 0 and xp <= self.width and yp >= 0 and yp <= self.height:
-                            self.canvas.set(6+xp, yp+8)
+                            self.canvas.set(6 + xp, yp + 8)
 
                 rendered_frame = self.canvas.frame() + '\n'
                 terminal_screen.addstr(0, 0, rendered_frame)

@@ -3,7 +3,6 @@ from Queue import Queue
 
 
 class BaseComponent(object):
-
     def __init__(self, initial_state, is_test=False):
         self.initial_state = initial_state.copy()
         self.state = initial_state.copy()
