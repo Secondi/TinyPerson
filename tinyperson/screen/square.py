@@ -1,17 +1,16 @@
 __author__ = 'SecondiNation'
 
 import itertools
+import logging
 
 from .base import ScreenComponent
 from .line import Line
 
-import logging
-import sys
-
 
 logger = logging.getLogger("TinyPerson.screen")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 logger.addHandler(logging.FileHandler("debug.log"))
+
 
 class Square(ScreenComponent):
     def __init__(self, x, y, half_width, world_width, world_height, is_test=False):
@@ -67,10 +66,7 @@ class Square(ScreenComponent):
         tr_x = br_x
         tr_y = tl_y
 
-        logger.debug("top left %s, %s" % (tl_x, tl_y))
-        #logger.debug("bottom left %s, %s" % (bl_x, bl_y))
-        #logger.debug("top right %s, %s" % (tr_x, tr_y))
-        #logger.debug("bottom right %s, %s" % (br_x, br_y))
+        logger.debug("SQUARE: %s, %s, %s, %s, %s, %s, %s, %s" % (tl_x, tl_y, bl_x, bl_y, tr_x, tr_y, br_x, br_y))
 
         return itertools.chain(
             # Top Line
