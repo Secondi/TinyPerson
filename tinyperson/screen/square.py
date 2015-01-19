@@ -8,7 +8,7 @@ from .line import Line
 
 
 logger = logging.getLogger("TinyPerson.screen")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARN)
 logger.addHandler(logging.FileHandler("debug_screen.log"))
 
 

@@ -29,7 +29,7 @@ class PhysicsWorld(object):
             pymunk.Segment(static_body, (0, 0), (0, PHYSICS_HEIGHT), 0.0),
             # right
             pymunk.Segment(static_body, (PHYSICS_WIDTH, PHYSICS_HEIGHT), (PHYSICS_WIDTH, 0), 0.0),
-            #top
+            # top
             pymunk.Segment(static_body, (0, PHYSICS_HEIGHT), (PHYSICS_WIDTH, PHYSICS_HEIGHT), 0.0)
         ]
 
@@ -51,6 +51,27 @@ class PhysicsWorld(object):
     def window_player_position(self, window_width, window_height):
         x, y = self.main_player.position
         return convert_physics_to_world(x, y, window_width, window_height)
+
+    def move_player(self, jump, left, right):
+        """
+
+        :param jump: bool
+        :param left: bool
+        :param right: bool
+        :return:
+        """
+
+        move_y = -100 if jump else 0
+        if left and right:
+            move_x = 0
+        elif left:
+            move_x = -60
+        elif right:
+            move_x = 60
+        else:
+            move_x = 0
+
+        self.main_player.apply_impulse((move_x, move_y))
 
     def add(self, asset):
         self.world.add(asset)

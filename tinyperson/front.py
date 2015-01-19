@@ -5,7 +5,7 @@ from time import sleep
 from threading import Thread
 
 from .screen import TerminalScreen, Square
-from .controller import GameController
+from .controller import GameController, SPACE, LEFT, RIGHT
 from .physics import PhysicsWorld
 
 
@@ -20,7 +20,7 @@ WINDOW_WIDTH = 50
 import logging
 
 logger = logging.getLogger("TinyPerson.MainLoop")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARN)
 logger.addHandler(logging.FileHandler("debug.log"))
 
 
@@ -73,6 +73,14 @@ class GameLoop(object):
     def step_physics(self):
         while self.active:
             self.window_physics.step(PHYSICS_STEP)
+
+            controller_state = self.controller.get_state()
+
+            self.window_physics.move_player(
+                jump=controller_state[SPACE],
+                left=controller_state[LEFT],
+                right=controller_state[RIGHT]
+            )
 
             # should the game end?
             if not self.controller.is_enabled():

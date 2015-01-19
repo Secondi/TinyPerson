@@ -6,6 +6,11 @@ from threading import Thread
 
 from .base import BaseComponent
 
+LEFT = KEY_LEFT
+RIGHT = KEY_RIGHT
+SPACE = 32  # binary:010 0000, Oct:040, Dec:32, Hex:20
+EXIT = 113
+
 
 class GameController(BaseComponent):
     """
@@ -14,10 +19,6 @@ class GameController(BaseComponent):
     Wrap around the game controller state and return the keys that are currently being pressed
     """
 
-    LEFT = KEY_LEFT
-    RIGHT = KEY_RIGHT
-    SPACE = 32  # binary:010 0000, Oct:040, Dec:32, Hex:20
-    EXIT = 113
 
     CONTROLS = (
         LEFT,  # Left Arrow
@@ -79,7 +80,7 @@ class GameController(BaseComponent):
                 self.state[key_press] = True
                 # reset key_press
 
-            if key_press is self.EXIT:
+            if key_press is EXIT:
                 self.disable_component()
 
             key_press = None
