@@ -41,7 +41,7 @@ class PhysicsWorld(object):
         radius = 5
         inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
         self.main_player = pymunk.Body(mass, inertia)
-        self.main_player.position = 100, 10
+        self.main_player.position = 100, 100
         shape = pymunk.Circle(self.main_player, radius, (0, 0))
         shape.elasticity = 0.95
         self.world.add(self.main_player, shape)

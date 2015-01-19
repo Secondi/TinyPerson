@@ -45,17 +45,24 @@ class GameLoop(object):
         self.active = True
         self.assets = []
 
+    def convert_world_to_square(self, world_x, world_y):
+        half_square = WINDOW_WIDTH / 2
+
+        return world_x + ((self.world_width / 2) - half_square), world_y + ((self.world_height / 2) - half_square)
+
 
     def draw_assets(self):
         self.assets.append(
             Square(self.world_width / 2, self.world_height / 2, WINDOW_WIDTH / 2, self.world_width, self.world_height))
 
-        player_x, player_y = self.window_physics.window_player_position(WINDOW_WIDTH, WINDOW_WIDTH)
+        player_x, player_y = self.convert_world_to_square(
+            *self.window_physics.window_player_position(WINDOW_WIDTH, WINDOW_WIDTH))
 
         player = Square(player_x, player_y, 1, self.world_width, self.world_height)
 
         while self.active:
-            player_x, player_y = self.window_physics.window_player_position(WINDOW_WIDTH, WINDOW_WIDTH)
+            player_x, player_y = self.convert_world_to_square(
+                *self.window_physics.window_player_position(WINDOW_WIDTH, WINDOW_WIDTH))
             logger.debug("player position: %s, %s" % (player_x, player_y))
             player.set_center(player_x, player_y)
 
