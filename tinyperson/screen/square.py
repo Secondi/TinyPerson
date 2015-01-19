@@ -8,8 +8,8 @@ from .line import Line
 
 
 logger = logging.getLogger("TinyPerson.screen")
-logger.setLevel(logging.INFO)
-logger.addHandler(logging.FileHandler("debug.log"))
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.FileHandler("debug_screen.log"))
 
 
 class Square(ScreenComponent):

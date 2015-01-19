@@ -11,10 +11,17 @@ from .physics import PhysicsWorld
 
 FPS = 60.0
 RENDER_STEP = 1. / FPS
-PHYSICS_FPS = 30.0
+PHYSICS_FPS = 60.0
 PHYSICS_STEP = 1. / PHYSICS_FPS
 
-PHYSICS_WIDTH = 25
+# Window is a square
+WINDOW_WIDTH = 50
+
+import logging
+
+logger = logging.getLogger("TinyPerson.MainLoop")
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.FileHandler("debug.log"))
 
 
 class GameLoop(object):
@@ -26,7 +33,7 @@ class GameLoop(object):
         if is_test:
             print "starting game"
 
-        self.physics = PhysicsWorld()
+        self.window_physics = PhysicsWorld()
 
         self.stdscr = curses.initscr()
         self.stdscr.refresh()
@@ -41,16 +48,24 @@ class GameLoop(object):
 
     def draw_assets(self):
         self.assets.append(
-            Square(self.world_width / 2, self.world_height / 2, PHYSICS_WIDTH, self.world_width, self.world_height))
+            Square(self.world_width / 2, self.world_height / 2, WINDOW_WIDTH / 2, self.world_width, self.world_height))
+
+        player_x, player_y = self.window_physics.window_player_position(WINDOW_WIDTH, WINDOW_WIDTH)
+
+        player = Square(player_x, player_y, 1, self.world_width, self.world_height)
 
         while self.active:
-            self.term.queue_in.put(self.assets)
+            player_x, player_y = self.window_physics.window_player_position(WINDOW_WIDTH, WINDOW_WIDTH)
+            logger.debug("player position: %s, %s" % (player_x, player_y))
+            player.set_center(player_x, player_y)
+
+            self.term.queue_in.put(self.assets + [player])
 
             sleep(RENDER_STEP)
 
     def step_physics(self):
         while self.active:
-            self.physics.step(PHYSICS_STEP)
+            self.window_physics.step(PHYSICS_STEP)
 
             # should the game end?
             if not self.controller.is_enabled():
