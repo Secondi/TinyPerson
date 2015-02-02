@@ -18,7 +18,7 @@ def convert_physics_to_world(physics_x, physics_y, window_width, window_height):
 class PhysicsWorld(object):
     def __init__(self, gravity=100.0):
         self.world = pymunk.Space()
-        self.world.gravity = (0.0, gravity)
+        self.world.gravity = (0.0, 0.0)
         self.active = True
 
         static_body = pymunk.Body()
@@ -41,9 +41,11 @@ class PhysicsWorld(object):
         radius = 5
         inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
         self.main_player = pymunk.Body(mass, inertia)
+        self.main_player._set_velocity_limit(100)
         self.main_player.position = 100, 100
         shape = pymunk.Circle(self.main_player, radius, (0, 0))
-        shape.elasticity = 0.95
+        shape.elasticity = 0.
+        shape.friction = 4
         self.world.add(self.main_player, shape)
 
         logger.debug("Initialized physics world")
@@ -61,17 +63,18 @@ class PhysicsWorld(object):
         :return:
         """
 
-        move_y = -100 if jump else 0
-        if left and right:
-            move_x = 0
-        elif left:
-            move_x = -60
-        elif right:
-            move_x = 60
-        else:
-            move_x = 0
+        x, y = self.main_player._get_velocity()
 
-        self.main_player.apply_impulse((move_x, move_y))
+        if jump:
+            y -= 100
+
+        if left:
+            x -= 30
+
+        if right:
+            x += 30
+
+        self.main_player._set_velocity((x, y))
 
     def add(self, asset):
         self.world.add(asset)
