@@ -1,7 +1,7 @@
 __author__ = 'SecondiNation'
 
 from Queue import Empty
-from curses import KEY_RIGHT, KEY_LEFT
+from curses import KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN
 from threading import Thread
 
 from .base import BaseComponent
@@ -10,7 +10,8 @@ LEFT = KEY_LEFT
 RIGHT = KEY_RIGHT
 SPACE = 32  # binary:010 0000, Oct:040, Dec:32, Hex:20
 EXIT = 113
-
+UP = KEY_UP
+DOWN = KEY_DOWN
 
 class GameController(BaseComponent):
     """
@@ -23,13 +24,18 @@ class GameController(BaseComponent):
     CONTROLS = (
         LEFT,  # Left Arrow
         RIGHT,  # Right Arrow
-        SPACE,  # Jump
+        SPACE,  # Shoot, i guess
+        UP,
+        DOWN
+
     )
 
     RESET_CONTROLLER = {
         LEFT: False,
         RIGHT: False,
-        SPACE: False
+        SPACE: False,
+        UP: False,
+        DOWN: False
     }
 
     def __init__(self, terminal_window, initial_state, is_test=False):

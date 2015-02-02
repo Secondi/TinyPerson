@@ -54,7 +54,7 @@ class PhysicsWorld(object):
         x, y = self.main_player.position
         return convert_physics_to_world(x, y, window_width, window_height)
 
-    def move_player(self, jump, left, right):
+    def move_player(self, up, down, left, right):
         """
 
         :param jump: bool
@@ -65,14 +65,17 @@ class PhysicsWorld(object):
 
         x, y = self.main_player._get_velocity()
 
-        if jump:
-            y -= 100
+        if up:
+            y -= 50
+
+        if down:
+            y += 50
 
         if left:
-            x -= 30
+            x -= 50
 
         if right:
-            x += 30
+            x += 50
 
         self.main_player._set_velocity((x, y))
 

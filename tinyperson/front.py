@@ -5,7 +5,7 @@ from time import sleep
 from threading import Thread
 
 from .screen import TerminalScreen, Square
-from .controller import GameController, SPACE, LEFT, RIGHT
+from .controller import GameController, UP, DOWN, LEFT, RIGHT
 from .physics import PhysicsWorld
 
 
@@ -77,7 +77,8 @@ class GameLoop(object):
             controller_state = self.controller.get_state()
 
             self.window_physics.move_player(
-                jump=controller_state[SPACE],
+                up=controller_state[UP],
+                down=controller_state[DOWN],
                 left=controller_state[LEFT],
                 right=controller_state[RIGHT]
             )
