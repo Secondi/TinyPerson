@@ -1,0 +1,4 @@
+machine:
+  timezone: Pacific/Auckland
+  python:
+    version: 2.7.8
